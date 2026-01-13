@@ -88,6 +88,30 @@ header {
   }
 }
 
+/* ===== Left Dragon ===== */
+#dragon-left {
+  position: absolute;  /* relative to header */
+  top: 20px;           /* adjust vertical position */
+  left: -300px;        /* start off-screen to the left */
+  width: 800px;        /* same big size as right dragon */
+  height: auto;
+  z-index: 10;
+  animation: slideInLeft 2s forwards ease-out;
+}
+
+@keyframes slideInLeft {
+  0% {
+    left: -300px;      /* off-screen start */
+    opacity: 0;
+    transform: scale(0.8) rotate(-10deg);
+  }
+  100% {
+    left: 20px;        /* final position next to LEGO images on left */
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
 header p {
   font-size: 1.2em;
   margin: 5px 0;
@@ -277,14 +301,20 @@ header p {
     <img src="images/6.png" alt="6 LEGO Name">
   </div>
 
-  <!-- Dragon image -->
-  <img src="images/lego dragons.jpg" alt="Dragon" id="dragon">
+  <!-- Right dragon -->
+  <div id="dragon-container">
+    <img src="images/lego dragons.jpg" id="dragon" alt="Dragon Right">
+  </div>
+
+  <!-- Left dragon -->
+  <div id="dragon-left-container">
+    <img src="images/lego dragons 2.jpg" id="dragon-left" alt="Dragon Left">
+  </div>
 
   <p>🎉 Marcus’ LEGO Birthday Bash 🎂</p>
   <p>Countdown to the Party:</p>
   <div id="countdown"></div>
 </header>
-
 
 <section class="event-info">
   <p>📅 Monday, January 26</p>
