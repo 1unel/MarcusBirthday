@@ -245,14 +245,40 @@ header p {
 
   /* ===== Event Info ===== */
   .event-info {
-    text-align: center;
-    font-size: 1.2em;
-    margin: 30px 20px;
-    background: rgba(255,255,255,0.85);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2); 
-  }
+  text-align: center;
+  background: rgba(255,255,255,0.9);
+  padding: 20px;
+  border-radius: 15px;
+  max-width: 500px;
+  margin: 20px auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.event-date-time p {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 5px 0;
+  color: #d6001c;
+}
+
+.event-location p {
+  font-size: 1.2em;
+  margin: 5px 0;
+}
+
+.map-preview {
+  margin-top: 15px;
+  border-radius: 12px;
+  overflow: hidden;
+  height: 200px;
+}
+
+.map-preview iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 12px;
+}
 
   .rsvp-buttons {
   display: flex;
@@ -605,15 +631,28 @@ header p {
 
 <section class="event-info">
 
-  <div>
-  <p>📅 Monday, January 26</p>
-  <p>🕒 3:00 PM</p>
-  <p>📍 Ardeer Community Park Playground (140 Forrest St)</p>
-  <!-- Google Maps -->
-    <a href="https://www.google.com/maps/search/?api=1&query=Ardeer+Community+Park+Playground+140+Forrest+St" target="_blank" class="rsvp-btn maps">
-      📍 Open in Google Maps
-      </a>
+  <div class="event-details">
+    <div class="event-date-time">
+      <p class="event-date">📅 Monday, January 26</p>
+      <p class="event-time">🕒 3:00 PM</p>
+    </div>
+
+    <div class="event-location">
+      <p>📍 Ardeer Community Park Playground</p>
+    </div>
   </div>
+
+  <!-- Mini map using public embed link -->
+  <div class="map-preview">
+    <iframe 
+      src="https://www.google.com/maps?q=Ardeer+Community+Park+Playground+140+Forrest+St&output=embed" 
+      style="border:0;" allowfullscreen="" loading="lazy">
+    </iframe>
+  </div>
+
+  <a href="https://www.google.com/maps/search/?api=1&query=Ardeer+Community+Park+Playground+140+Forrest+St" target="_blank" class="rsvp-btn maps">
+        📍 Open in Google Maps
+      </a>
 
 </section>
 
