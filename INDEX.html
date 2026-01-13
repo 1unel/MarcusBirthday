@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎉 Marcus' 6th LEGO Birthday 🎂</title>
+<style>
+  /* ===== Body & Background ===== */
+  body {
+    margin: 0;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: url('https://images4.alphacoders.com/793/793691.jpg') no-repeat center center fixed;
+    background-size: cover;
+    overflow-x: hidden;
+    color: #222;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: rgba(255,255,255,0.3);
+    z-index:0;
+  }
+
+  /* ===== Header ===== */
+  header {
+    text-align: center;
+    padding: 50px 20px 30px 20px;
+    background: rgba(255, 204, 0, 0.9);
+    border-bottom: 5px solid #d6001c;
+    position: relative;
+    z-index:1;
+  }
+
+  /* Marcus LEGO Name */
+  #lego-name img {
+    max-width: 90%;
+    height: auto;
+    display: block;
+    margin: 0 auto 15px;
+    width: 300px; /* BIGGER */
+    max-width: 90vw;
+    filter: drop-shadow(3px 3px 5px #d6001c);
+    transition: transform 0.3s;
+  }
+
+  #lego-name img:hover {
+    transform: scale(1.05);
+  }
+
+  /* Age LEGO Block */
+  #lego-age span {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: white;
+    padding: 15px 20px;
+    margin: 10px auto;
+    display: inline-block;
+    background-color: #1e90ff;
+    border-radius: 10px;
+    box-shadow: 0 5px #999;
+  }
+
+  header p {
+    font-size: 1.2em;
+    margin: 5px 0;
+  }
+
+  #countdown {
+    font-size: 1.5em;
+    margin-top: 15px;
+    color: #1a1a1a;
+    font-weight: bold;
+  }
+
+  /* ===== Event Info ===== */
+  .event-info {
+    text-align: center;
+    font-size: 1.2em;
+    margin: 30px 20px;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  }
+
+  /* ===== Carousel ===== */
+  .carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 15px;
+    padding: 20px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .carousel img {
+    flex: 0 0 auto;
+    width: 250px;
+    height: 250px;
+    border-radius: 15px;
+    object-fit: cover;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transition: transform 0.3s;
+    scroll-snap-align: center;
+  }
+
+  .carousel img:hover {
+    transform: scale(1.08) rotate(5deg);
+  }
+
+  /* ===== RSVP Form ===== */
+  .rsvp {
+    text-align: center;
+    margin: 50px 20px;
+    background: rgba(255,255,255,0.85);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  }
+
+  .rsvp input, .rsvp textarea {
+    padding: 10px;
+    width: 80%;
+    max-width: 400px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 2px solid #d6001c;
+    outline: none;
+  }
+
+  .rsvp button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 12px;
+    background: #d6001c;
+    color: white;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background 0.3s;
+  }
+
+  .rsvp button:hover {
+    background: #ff4757;
+  }
+
+  /* ===== Footer ===== */
+  footer {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255,204,0,0.9);
+    color: #222;
+    font-weight: bold;
+    border-top: 5px solid #d6001c;
+    position: relative;
+    z-index:1;
+  }
+
+  /* ===== Floating LEGO bricks ===== */
+  .floating-brick {
+    position: absolute;
+    pointer-events: none;
+    z-index:2;
+    transform: rotate(0deg);
+    transition: transform 0.1s;
+  }
+
+  /* ===== Toast Notification ===== */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left:50%;
+    transform: translateX(-50%);
+    background: #1e90ff;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-weight: bold;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  .toast.show {
+    opacity: 1;
+  }
+
+  /* ===== Responsive ===== */
+  @media(max-width: 600px) {
+    #lego-name img { width: 200px; }
+    #lego-age span { font-size: 2em; padding: 12px 18px; }
+    .carousel img { width: 180px; height: 180px; }
+    .rsvp input, .rsvp textarea { width: 90%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Background Music -->
+<audio id="bg-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop autoplay></audio>
+
+<header>
+  <div id="lego-name">
+    <img src="images/marcusname.png" alt="Marcus LEGO Name">
+  </div>
+
+  <div id="lego-name">
+    <img src="images/turns.png" alt="Marcus LEGO Name">
+  </div>
+
+  <div id="lego-name">
+    <img src="images/6.png" alt="Marcus LEGO Name">
+  </div>
+  
+  <p>🎉 Marcus’ LEGO Birthday Bash 🎂</p>
+  <p>Countdown to the Party:</p>
+  <div id="countdown"></div>
+</header>
+
+<section class="event-info">
+  <p>📅 Monday, January 26</p>
+  <p>🕒 3:00 PM</p>
+  <p>📍 Ardeer Community Park Playground (140 Forrest St)</p>
+  <p>📱 RSVP: 0450059438</p>
+</section>
+
+<section class="carousel">
+  <img src="https://wallpapercave.com/wp/wp8798492.jpg" alt="LEGO Image 1" loading="lazy">
+  <img src="https://wallpapers-clan.com/wp-content/uploads/2025/01/lego-marvel-wolverine-deadpool-desktop-wallpaper-preview.jpg" alt="LEGO Image 2" loading="lazy">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjgd0KFuW6bGG2BjUT8DnCk5zSf8lXA01QiQ&s" alt="LEGO Image 3" loading="lazy">
+  <img src="https://www.hdwallpapers.in/download/the_lego_batman_movie_2017-wide.jpg" alt="LEGO Image 4" loading="lazy">
+</section>
+
+<section class="rsvp">
+  <h2>Leave a Birthday Wish for Marcus!</h2>
+  <input type="text" placeholder="Your Name" id="name"><br>
+  <textarea placeholder="Your Message" id="message"></textarea><br>
+  <button onclick="submitWish()">Send Wish 🎈</button>
+</section>
+
+<footer>
+  Thank you for celebrating with Marcus! 💛
+</footer>
+
+<!-- Toast -->
+<div id="toast" class="toast">Wish sent!</div>
+
+<script>
+  // ===== Countdown Timer =====
+  const countdownEl = document.getElementById('countdown');
+  const birthdayDate = new Date('2026-01-26T15:00:00');
+
+  function updateCountdown() {
+    const now = new Date();
+    const diff = birthdayDate - now;
+    if(diff < 0){
+      countdownEl.innerHTML = "🎉 The party has started! 🎉";
+      return;
+    }
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff/(1000*60*60)) % 24);
+    const minutes = Math.floor((diff/(1000*60)) % 60);
+    const seconds = Math.floor((diff/1000) % 60);
+    countdownEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  // ===== RSVP Function =====
+  function submitWish() {
+    const name = document.getElementById('name').value || 'Anonymous';
+    const message = document.getElementById('message').value || '';
+    showToast(`Thank you, ${name}! Your wish: "${message}" has been sent!`);
+    document.getElementById('name').value = '';
+    document.getElementById('message').value = '';
+  }
+
+  function showToast(text){
+    const toast = document.getElementById('toast');
+    toast.innerText = text;
+    toast.classList.add('show');
+    setTimeout(()=> toast.classList.remove('show'), 3000);
+  }
+
+  // ===== Floating LEGO bricks =====
+  const legoImages = [
+    'https://www.pngall.com/wp-content/uploads/15/Lego-Brick-PNG-Pic.png',
+    'https://static.vecteezy.com/system/resources/thumbnails/048/686/542/small_2x/a-bright-green-eight-stud-lego-brick-on-a-transparent-background-for-creative-building-play-and-design-free-png.png',
+    'https://pngimg.com/d/lego_PNG13.png'
+  ];
+
+  const floatingCount = 12;
+  for(let i=0;i<floatingCount;i++){
+    const brick = document.createElement('img');
+    brick.src = legoImages[Math.floor(Math.random()*legoImages.length)];
+    brick.className = 'floating-brick';
+    brick.style.width = 40 + Math.random()*30 + 'px';
+    brick.style.left = Math.random()*100 + 'vw';
+    brick.style.top = window.innerHeight + Math.random()*500 + 'px';
+    brick.style.transform = `rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(brick);
+    animateFloatingBrick(brick, Math.random()*1.5 + 0.5);
+  }
+
+  function animateFloatingBrick(el, speed){
+    let x = parseFloat(el.style.left);
+    let y = parseFloat(el.style.top);
+    let rot = Math.random()*360;
+
+    function floatStep(){
+      y -= speed;
+      rot += 1; // rotate slowly
+      if(y < -60){
+        y = window.innerHeight + Math.random()*200;
+        x = Math.random()*100;
+        el.style.width = 40 + Math.random()*30 + 'px';
+      }
+      el.style.top = y + 'px';
+      el.style.left = x + 'vw';
+      el.style.transform = `rotate(${rot}deg)`;
+      requestAnimationFrame(floatStep);
+    }
+    requestAnimationFrame(floatStep);
+  }
+</script>
+</body>
+</html>
