@@ -4,15 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🎉 Marcus' 6th LEGO Birthday 🎂</title>
-<style>
-  @font-face {
-    font-family: 'Rolade';
-    src: url('fonts/fonnts.com-roladeitalic-black.otf') format('opentype');
-    font-weight: 900;
-    font-style: italic;
-    font-display: swap;
-  }
 
+<style>
+  /* ===== Fonts ===== */
+  @font-face {
+  font-family: 'Rolade';
+  src: url('RoladeItalic-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+  /* ===== Body & Background ===== */
   body {
     margin: 0;
     font-family: 'Rolade', sans-serif;
@@ -26,40 +29,80 @@
   body::before {
     content: '';
     position: fixed;
-    top:0; left:0;
-    width:100%; height:100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     background: rgba(255,255,255,0.3);
-    z-index:0;
+    z-index: 0;
   }
 
-  header {
-    text-align: center;
-    padding: 50px 20px 30px 20px;
-    background: rgba(255, 204, 0, 0.9);
-    border-bottom: 5px solid #d6001c;
-    position: relative;
-    z-index:1;
+  /* ===== Header ===== */
+header {
+  text-align: center;
+  padding: 50px 20px 30px 20px;
+  background: rgba(255, 204, 0, 0.9);
+  border-bottom: 5px solid #d6001c;
+  position: relative; /* needed for absolute positioning of dragon */
+  z-index: 1;
+}
+
+#lego-name img,
+#lego-turns img,
+#lego-age img {
+  display: block;
+  margin: 0 auto 15px;
+  filter: drop-shadow(3px 3px 5px #d6001c);
+  transition: transform 0.3s;
+}
+
+#lego-name img { width: 300px; }
+#lego-turns img { width: 200px; }
+#lego-age img { width: 150px; }
+
+#lego-name img:hover,
+#lego-turns img:hover,
+#lego-age img:hover {
+  transform: scale(1.05);
+}
+
+/* ===== Dragon ===== */
+#dragon {
+  position: absolute; /* relative to header */
+  top: 20px;          /* adjust vertical position */
+  right: -300px;      /* start further off-screen */
+  width: 800px;       /* BIGGER size */
+  height: auto;
+  z-index: 10;        /* above LEGO images */
+  animation: slideIn 2s forwards ease-out;
+}
+
+@keyframes slideIn {
+  0% {
+    right: -300px; /* off-screen start */
+    opacity: 0;
+    transform: scale(0.8) rotate(10deg);
   }
-
-  #lego-name img, #lego-turns img, #lego-age img {
-    max-width: 90%;
-    height: auto;
-    display: block;
-    margin: 0 auto 15px;
-    filter: drop-shadow(3px 3px 5px #d6001c);
-    transition: transform 0.3s;
+  100% {
+    right: 20px;   /* final position next to images */
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
   }
-  #lego-name img { width: 300px; }
-  #lego-turns img { width: 200px; }
-  #lego-age img { width: 150px; }
+}
 
-  #lego-name img:hover, #lego-turns img:hover, #lego-age img:hover {
-    transform: scale(1.05);
-  }
+header p {
+  font-size: 1.2em;
+  margin: 5px 0;
+}
 
-  header p { font-size: 1.2em; margin: 5px 0; }
-  #countdown { font-size: 1.5em; margin-top: 15px; color: #1a1a1a; font-weight: bold; }
+#countdown {
+  font-size: 1.5em;
+  margin-top: 15px;
+  color: #1a1a1a;
+  font-weight: bold;
+}
 
+
+
+  /* ===== Event Info ===== */
   .event-info {
     text-align: center;
     font-size: 1.2em;
@@ -70,28 +113,41 @@
     box-shadow: 0 5px 10px rgba(0,0,0,0.2); 
   }
 
-  .carousel {
-    display: flex;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    gap: 15px;
-    padding: 20px;
-    scroll-snap-type: x mandatory;
+  /* ===== Infinite Loop Carousel ===== */
+  .carousel-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    margin: 30px 0;
+    z-index: 2;
   }
 
-  .carousel img {
+  .carousel-track {
+    display: flex;
+    gap: 15px;
+    animation: scrollCarousel 20s linear infinite;
+  }
+
+  .carousel-track img {
     flex: 0 0 auto;
-    width: 250px;
-    height: 250px;
-    border-radius: 15px;
+    width: 330px;
+    height: 330px;
     object-fit: cover;
+    border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     transition: transform 0.3s;
-    scroll-snap-align: center;
   }
 
-  .carousel img:hover { transform: scale(1.08) rotate(5deg); }
+  .carousel-track img:hover {
+    transform: scale(1.08) rotate(5deg);
+  }
 
+  @keyframes scrollCarousel {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ===== RSVP Form ===== */
   .rsvp {
     text-align: center;
     margin: 50px 20px;
@@ -124,19 +180,11 @@
     transition: background 0.3s;
   }
 
-  .rsvp button:hover { background: #ff4757; }
-
-  footer {
-    text-align: center;
-    padding: 20px;
-    background: rgba(255,204,0,0.9);
-    color: #222;
-    font-weight: bold;
-    border-top: 5px solid #d6001c;
-    position: relative;
-    z-index:1;
+  .rsvp button:hover {
+    background: #ff4757;
   }
 
+  /* ===== Floating LEGO bricks ===== */
   .floating-brick {
     position: absolute;
     pointer-events: none;
@@ -145,10 +193,11 @@
     transition: transform 0.1s;
   }
 
+  /* ===== Toast Notification ===== */
   .toast {
     position: fixed;
     bottom: 30px;
-    left:50%;
+    left: 50%;
     transform: translateX(-50%);
     background: #1e90ff;
     color: white;
@@ -160,9 +209,16 @@
     transition: opacity 0.5s;
   }
 
-  .toast.show { opacity: 1; }
+  .toast.show {
+    opacity: 1;
+  }
 
-  #wishWall { margin-top: 25px; text-align: left; }
+  /* ===== Live Wish Wall ===== */
+  #wishWall {
+    margin-top: 25px;
+    text-align: left;
+  }
+
   .wish {
     background: white;
     border-left: 8px solid #1e90ff;
@@ -171,32 +227,64 @@
     margin-bottom: 10px;
     animation: fadeIn 0.4s ease;
   }
-  .wish strong { color: #d6001c; }
+
+  .wish strong {
+    color: #d6001c;
+  }
+
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
+  /* ===== Footer ===== */
+  footer {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255,204,0,0.9);
+    color: #222;
+    font-weight: bold;
+    border-top: 5px solid #d6001c;
+    position: relative;
+    z-index:1;
+  }
+
+  /* ===== Responsive ===== */
   @media(max-width: 600px) {
     #lego-name img { width: 200px; }
-    .carousel img { width: 180px; height: 180px; }
+    #lego-turns img { width: 150px; }
+    #lego-age img { width: 120px; }
+    .carousel-track img { width: 200px; height: 200px; }
     .rsvp input, .rsvp textarea { width: 90%; }
   }
 </style>
+
 </head>
 <body>
 
 <audio id="bg-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop autoplay></audio>
 
 <header>
-  <div id="lego-name"><img src="images/marcusname.png" alt="Marcus LEGO Name"></div>
-  <div id="lego-turns"><img src="images/turns.png" alt="Turns LEGO Name"></div>
-  <div id="lego-age"><img src="images/6.png" alt="6 LEGO Name"></div>
-  
+  <div id="lego-name">
+    <img src="images/marcusname.png" alt="Marcus LEGO Name">
+  </div>
+
+  <div id="lego-turns">
+    <img src="images/turns.png" alt="Turns LEGO Name">
+  </div>
+
+  <div id="lego-age">
+    <img src="images/6.png" alt="6 LEGO Name">
+  </div>
+
+  <!-- Dragon image -->
+  <img src="images/lego dragons.jpg" alt="Dragon" id="dragon">
+
   <p>🎉 Marcus’ LEGO Birthday Bash 🎂</p>
   <p>Countdown to the Party:</p>
   <div id="countdown"></div>
 </header>
+
 
 <section class="event-info">
   <p>📅 Monday, January 26</p>
@@ -205,11 +293,23 @@
   <p>📱 RSVP: 0450059438</p>
 </section>
 
-<section class="carousel">
-  <img src="https://wallpapercave.com/wp/wp8798492.jpg" alt="LEGO Image 1">
-  <img src="https://wallpapers-clan.com/wp-content/uploads/2025/01/lego-marvel-wolverine-deadpool-desktop-wallpaper-preview.jpg" alt="LEGO Image 2">
-  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjgd0KFuW6bGG2BjUT8DnCk5zSf8lXA01QiQ&s" alt="LEGO Image 3">
-  <img src="https://www.hdwallpapers.in/download/the_lego_batman_movie_2017-wide.jpg" alt="LEGO Image 4">
+<section class="carousel-container">
+  <div class="carousel-track">
+    <!-- Original images -->
+    <img src="images/lego avengers.jpg" alt="LEGO Avengers">
+    <img src="images/lego batman.jpg" alt="LEGO Batman">
+    <img src="images/lego deadpool and wolverine.jpg" alt="LEGO Deadpool & Wolverine">
+    <img src="images/lego ninja.jpg" alt="LEGO Ninja">
+    <img src="images/lego starwars.jpg" alt="LEGO Star Wars">
+    <img src="images/lego harry potter.jpg" alt="LEGO Harry Potter">
+    <!-- Duplicate images for seamless loop -->
+    <img src="images/lego avengers.jpg" alt="LEGO Avengers">
+    <img src="images/lego batman.jpg" alt="LEGO Batman">
+    <img src="images/lego deadpool and wolverine.jpg" alt="LEGO Deadpool & Wolverine">
+    <img src="images/lego ninja.jpg" alt="LEGO Ninja">
+    <img src="images/lego starwars.jpg" alt="LEGO Star Wars">
+    <img src="images/lego harry potter.jpg" alt="LEGO Harry Potter">
+  </div>
 </section>
 
 <section class="rsvp">
@@ -374,4 +474,3 @@
 </script>
 </body>
 </html>
-
