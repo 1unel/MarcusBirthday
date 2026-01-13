@@ -81,7 +81,7 @@ header {
 
 @keyframes slideIn {
   0% {
-    right: -300px; /* off-screen start */
+    right: -100px; /* off-screen start */
     opacity: 0;
     transform: scale(0.8) rotate(10deg);
   }
@@ -96,7 +96,7 @@ header {
 #dragon-left {
   position: absolute;  /* relative to header */
   top: 20px;           /* adjust vertical position */
-  left: -300px;        /* start off-screen to the left */
+  left: -100px;        /* start off-screen to the left */
   width: 800px;        /* same big size as right dragon */
   height: auto;
   z-index: 1;
@@ -133,20 +133,27 @@ header {
 }
 
 @media (max-width: 480px) {
-  /* Very small phones: stack dragons and disable slide animation */
-  #dragon-container, #dragon-left-container {
-    position: relative;
+  /* Stack dragons and make them appear inside header content */
+  #dragon-container,
+  #dragon-left-container {
+    position: relative; /* stack inside header */
     left: auto;
     right: auto;
     top: 0;
     width: 100%;
-    text-align: center;
+    text-align: center; /* center dragons */
     margin: 10px 0;
   }
 
-  #dragon, #dragon-left {
-    width: 150px;     /* small size */
-    animation: none;  /* remove slide animation */
+  #dragon,
+  #dragon-left {
+    position: relative;   /* no longer absolute */
+    left: auto;
+    right: auto;
+    width: 150px;         /* smaller size for phones */
+    height: auto;
+    animation: none;      /* disable slide animation */
+    transform: scale(1);  /* reset any scale/rotation */
   }
 }
 
