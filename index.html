@@ -5,10 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🎉 Marcus' 6th LEGO Birthday 🎂</title>
 <style>
+  @font-face {
+  font-family: 'Rolade';
+  src: url('fonts/fonnts.com-roladeitalic-black.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
   /* ===== Body & Background ===== */
   body {
     margin: 0;
-    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-family: 'Rolade', sans-serif;
     background: url('https://images4.alphacoders.com/793/793691.jpg') no-repeat center center fixed;
     background-size: cover;
     overflow-x: hidden;
@@ -47,22 +54,21 @@
     transition: transform 0.3s;
   }
 
+  #lego-turns img {
+    max-width: 90%;
+    height: auto;
+    display: block;
+    margin: 0 auto 15px;
+    width: 200px; /* BIGGER */
+    max-width: 90vw;
+    filter: drop-shadow(3px 3px 5px #d6001c);
+    transition: transform 0.3s;
+  }
+
   #lego-name img:hover {
     transform: scale(1.05);
   }
 
-  /* Age LEGO Block */
-  #lego-age span {
-    font-size: 2.5em;
-    font-weight: bold;
-    color: white;
-    padding: 15px 20px;
-    margin: 10px auto;
-    display: inline-block;
-    background-color: #1e90ff;
-    border-radius: 10px;
-    box-shadow: 0 5px #999;
-  }
 
   header p {
     font-size: 1.2em;
@@ -207,7 +213,7 @@
     <img src="images/marcusname.png" alt="Marcus LEGO Name">
   </div>
 
-  <div id="lego-name">
+  <div id="lego-turns">
     <img src="images/turns.png" alt="Marcus LEGO Name">
   </div>
 
@@ -287,9 +293,7 @@
 
   // ===== Floating LEGO bricks =====
   const legoImages = [
-    'https://www.pngall.com/wp-content/uploads/15/Lego-Brick-PNG-Pic.png',
-    'https://static.vecteezy.com/system/resources/thumbnails/048/686/542/small_2x/a-bright-green-eight-stud-lego-brick-on-a-transparent-background-for-creative-building-play-and-design-free-png.png',
-    'https://pngimg.com/d/lego_PNG13.png'
+    'images/green brick.png', 'images/blue brick.png', 'images/yellow brick.png'
   ];
 
   const floatingCount = 12;
