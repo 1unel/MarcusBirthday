@@ -6,12 +6,13 @@
 <title>🎉 Marcus' 6th LEGO Birthday 🎂</title>
 <style>
   @font-face {
-  font-family: 'Rolade';
-  src: url('fonts/fonnts.com-roladeitalic-black.otf') format('opentype');
-  font-weight: 900;
-  font-style: italic;
-  font-display: swap;
-}
+    font-family: 'Rolade';
+    src: url('fonts/fonnts.com-roladeitalic-black.otf') format('opentype');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+  }
+
   /* ===== Body & Background ===== */
   body {
     margin: 0;
@@ -48,7 +49,7 @@
     height: auto;
     display: block;
     margin: 0 auto 15px;
-    width: 300px; /* BIGGER */
+    width: 300px;
     max-width: 90vw;
     filter: drop-shadow(3px 3px 5px #d6001c);
     transition: transform 0.3s;
@@ -59,7 +60,7 @@
     height: auto;
     display: block;
     margin: 0 auto 15px;
-    width: 200px; /* BIGGER */
+    width: 200px;
     max-width: 90vw;
     filter: drop-shadow(3px 3px 5px #d6001c);
     transition: transform 0.3s;
@@ -68,7 +69,6 @@
   #lego-name img:hover {
     transform: scale(1.05);
   }
-
 
   header p {
     font-size: 1.2em;
@@ -126,6 +126,8 @@
     padding: 25px;
     border-radius: 15px;
     box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 10; /* ensure clickable above bricks */
   }
 
   .rsvp input, .rsvp textarea {
@@ -168,8 +170,8 @@
   /* ===== Floating LEGO bricks ===== */
   .floating-brick {
     position: absolute;
-    pointer-events: none;
-    z-index:2;
+    pointer-events: none; /* clicks pass through */
+    z-index: 1;
     transform: rotate(0deg);
     transition: transform 0.1s;
   }
@@ -185,7 +187,7 @@
     padding: 15px 25px;
     border-radius: 10px;
     font-weight: bold;
-    z-index: 10;
+    z-index: 20;
     opacity: 0;
     transition: opacity 0.5s;
   }
@@ -197,10 +199,34 @@
   /* ===== Responsive ===== */
   @media(max-width: 600px) {
     #lego-name img { width: 200px; }
-    #lego-age span { font-size: 2em; padding: 12px 18px; }
     .carousel img { width: 180px; height: 180px; }
     .rsvp input, .rsvp textarea { width: 90%; }
   }
+
+  /* ===== LIVE WISH WALL ===== */
+  #wishWall {
+    margin-top: 25px;
+    text-align: left;
+  }
+
+  .wish {
+    background: white;
+    border-left: 8px solid #1e90ff;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .wish strong {
+    color: #d6001c;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
 </style>
 </head>
 <body>
@@ -214,11 +240,11 @@
   </div>
 
   <div id="lego-turns">
-    <img src="images/turns.png" alt="Marcus LEGO Name">
+    <img src="images/turns.png" alt="Turns LEGO Name">
   </div>
 
   <div id="lego-name">
-    <img src="images/6.png" alt="Marcus LEGO Name">
+    <img src="images/6.png" alt="6 LEGO Name">
   </div>
   
   <p>🎉 Marcus’ LEGO Birthday Bash 🎂</p>
@@ -242,9 +268,16 @@
 
 <section class="rsvp">
   <h2>Leave a Birthday Wish for Marcus!</h2>
-  <input type="text" placeholder="Your Name" id="name"><br>
-  <textarea placeholder="Your Message" id="message"></textarea><br>
-  <button onclick="submitWish()">Send Wish 🎈</button>
+
+  <!-- RSVP FORM -->
+  <form id="rsvpForm">
+    <input type="text" placeholder="Your Name (optional)" id="name"><br>
+    <textarea placeholder="Your Message" id="message" required></textarea><br>
+    <button type="submit">Send Wish 🎈</button>
+  </form>
+
+  <!-- LIVE WISH WALL -->
+  <div id="wishWall"></div>
 </section>
 
 <footer>
@@ -275,13 +308,47 @@
   setInterval(updateCountdown, 1000);
   updateCountdown();
 
-  // ===== RSVP Function =====
-  function submitWish() {
-    const name = document.getElementById('name').value || 'Anonymous';
-    const message = document.getElementById('message').value || '';
-    showToast(`Thank you, ${name}! Your wish: "${message}" has been sent!`);
-    document.getElementById('name').value = '';
-    document.getElementById('message').value = '';
+  /* ===== RSVP WISH SYSTEM ===== */
+  const form = document.getElementById('rsvpForm');
+  const wishWall = document.getElementById('wishWall');
+
+  // Load wishes from LocalStorage
+  loadWishes();
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault(); // prevent page refresh
+
+    const name = document.getElementById('name').value.trim() || 'Anonymous';
+    const message = document.getElementById('message').value.trim();
+
+    if(!message){
+      showToast('Please write a birthday message 🎂');
+      return;
+    }
+
+    const wish = { name, message };
+    saveWish(wish);
+    renderWish(wish);
+    showToast(`🎉 Thank you, ${name}!`);
+    form.reset();
+  });
+
+  function saveWish(wish){
+    const wishes = JSON.parse(localStorage.getItem('wishes')) || [];
+    wishes.unshift(wish);
+    localStorage.setItem('wishes', JSON.stringify(wishes));
+  }
+
+  function loadWishes(){
+    const wishes = JSON.parse(localStorage.getItem('wishes')) || [];
+    wishes.forEach(renderWish);
+  }
+
+  function renderWish(wish){
+    const div = document.createElement('div');
+    div.className = 'wish';
+    div.innerHTML = `<strong>${wish.name}</strong><br>${wish.message}`;
+    wishWall.prepend(div);
   }
 
   function showToast(text){
@@ -316,7 +383,7 @@
 
     function floatStep(){
       y -= speed;
-      rot += 1; // rotate slowly
+      rot += 1;
       if(y < -60){
         y = window.innerHeight + Math.random()*200;
         x = Math.random()*100;
