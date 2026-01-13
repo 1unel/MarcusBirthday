@@ -34,6 +34,7 @@
     width: 100%; height: 100%;
     background: rgba(255,255,255,0.3);
     z-index: 1;
+    pointer-events: none;
   }
 
   /* ===== Header ===== */
@@ -149,11 +150,11 @@ header {
     left: auto;
     right: auto;
     top: 0;
-    width: 160px;
+    width: 200px;
     height: auto;
 
     /* MOBILE ANIMATION */
-    animation: mobileFadeIn 1.2s ease-out forwards;
+    animation: mobileFadeIn 2.2s ease-out forwards;
   }
 }
 
@@ -174,11 +175,70 @@ header p {
   margin: 5px 0;
 }
 
-#countdown {
-  font-size: 1.5em;
-  margin-top: 15px;
-  color: #1a1a1a;
+#countdown-wrapper {
+  position: relative;       /* stay above dragons */
+  z-index: 15;              /* higher than dragons */
+  display: inline-block;    /* wrap tightly around text */
+  text-align: center;
+  padding: 15px 25px;
+  background: rgba(255, 255, 255, 0.85); /* subtle highlight */
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  margin: 20px auto;        /* center horizontally */
+}
+
+#countdown-wrapper p:first-child {
+  font-size: 2em;          /* title bigger */
   font-weight: bold;
+  margin: 0 0 10px 0;
+}
+
+#countdown-wrapper p:nth-child(2) {
+  font-size: 1.5em;
+  margin: 0 0 15px 0;
+}
+
+#countdown {
+  font-size: 3em;          /* countdown large */
+  font-weight: bold;
+  color: #d6001c;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  #countdown-wrapper {
+    padding: 10px 15px;
+  }
+
+  #countdown-wrapper p:first-child {
+    font-size: 1.5em;
+  }
+
+  #countdown-wrapper p:nth-child(2) {
+    font-size: 1.2em;
+  }
+
+  #countdown {
+    font-size: 2em;
+  }
+}
+
+@media (max-width: 480px) {
+  #countdown-wrapper {
+    padding: 8px 12px;
+  }
+
+  #countdown-wrapper p:first-child {
+    font-size: 1.2em;
+  }
+
+  #countdown-wrapper p:nth-child(2) {
+    font-size: 1em;
+  }
+
+  #countdown {
+    font-size: 1.5em;
+  }
 }
 
 
@@ -194,13 +254,53 @@ header p {
     box-shadow: 0 5px 10px rgba(0,0,0,0.2); 
   }
 
+  .rsvp-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.rsvp-btn {
+  padding: 14px 20px;
+  font-size: 1em;
+  font-weight: bold;
+  text-decoration: none;
+  color: #fff;
+  border-radius: 14px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  min-width: 180px;
+  text-align: center;
+}
+
+/* Button colors */
+.rsvp-btn.call { background: #d6001c; }
+.rsvp-btn.sms { background: #ff9800; }
+.rsvp-btn.whatsapp { background: #25d366; }
+.rsvp-btn.maps { background: #4285f4; }
+
+/* Hover */
+.rsvp-btn:hover {
+  transform: scale(1.05);
+  opacity: 0.95;
+}
+
+/* Mobile stacking */
+@media (max-width: 480px) {
+  .rsvp-btn {
+    width: 100%;
+  }
+}
+
   /* ===== Infinite Loop Carousel ===== */
 .carousel-container {
   width: 100%;
   overflow: visible;
   position: relative;
   margin: 30px 0;
-  z-index: 11;
+  z-index: 3;
 }
 
 .carousel-track {
@@ -349,8 +449,6 @@ header p {
 </head>
 <body>
 
-<audio id="bg-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop autoplay></audio>
-
 <header>
 
   <div id="lego-name">
@@ -365,6 +463,12 @@ header p {
     <img src="images/6.png" alt="6 LEGO Name">
   </div>
 
+  <div id="countdown-wrapper">
+    <p>🎉 Marcus’ LEGO Birthday Bash 🎂</p>
+    <p>Countdown to the Party:</p>
+    <div id="countdown"></div>
+  </div>
+
      <!-- Right dragon -->
   <div id="dragon-container">
     <img src="images/lego dragons.jpg" id="dragon" alt="Dragon Right">
@@ -375,18 +479,33 @@ header p {
     <img src="images/lego dragons 2.jpg" id="dragon-left" alt="Dragon Left">
   </div>
 
-
-  <p>🎉 Marcus’ LEGO Birthday Bash 🎂</p>
-  <p>Countdown to the Party:</p>
-  <div id="countdown"></div>
 </header>
 
 <section class="event-info">
   <p>📅 Monday, January 26</p>
   <p>🕒 3:00 PM</p>
   <p>📍 Ardeer Community Park Playground (140 Forrest St)</p>
-  <p>📱 RSVP: 0450059438</p>
+  <!-- Google Maps -->
+    <a href="https://www.google.com/maps/search/?api=1&query=Ardeer+Community+Park+Playground+140+Forrest+St" target="_blank" class="rsvp-btn maps">
+      📍 Open in Google Maps
+      </a>
+
+      <p>RSVP</p>
+  <div class="rsvp-buttons">
+
+    <!-- SMS -->
+    <a href="sms:+61450059438" class="rsvp-btn sms">TEXT</a>
+
+    <!-- WhatsApp -->
+    <a href="https://wa.me/61450059438" target="_blank" class="rsvp-btn whatsapp">
+      WHATSAPP
+    </a>
+
+    
+    
+  </div>
 </section>
+
 
 <section class="carousel-container">
   <div class="carousel-track">
@@ -420,12 +539,12 @@ header p {
 </section>
 
 <section class="rsvp">
-  <h2>Leave a Birthday Wish for Marcus!</h2>
+  <h2>Leave a Birthday Message for Marcus!</h2>
 
   <form id="rsvpForm">
     <input type="text" placeholder="Your Name (optional)" id="name"><br>
     <textarea placeholder="Your Message" id="message" required></textarea><br>
-    <button type="submit">Send Wish 🎈</button>
+    <button type="submit">Send Message 🎈</button>
   </form>
 
   <div id="wishWall"></div>
@@ -439,6 +558,7 @@ header p {
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
+
   // ===== Firebase Config =====
   const firebaseConfig = {
     apiKey: "AIzaSyCE7VmZFzmwUVbsHl1KDj-N_4QR6KH0_xo",
@@ -453,19 +573,31 @@ header p {
 
   // ===== Countdown =====
   const countdownEl = document.getElementById('countdown');
-  const birthdayDate = new Date('2026-01-26T15:00:00');
-  function updateCountdown(){
-    const now = new Date();
-    const diff = birthdayDate - now;
-    if(diff<0){ countdownEl.innerHTML="🎉 The party has started! 🎉"; return; }
-    const days = Math.floor(diff/(1000*60*60*24));
-    const hours = Math.floor((diff/(1000*60*60))%24);
-    const minutes = Math.floor((diff/(1000*60))%60);
-    const seconds = Math.floor((diff/1000)%60);
-    countdownEl.innerHTML=`${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+// Australia/Sydney timezone for Jan 26, 2026 at 3:00 PM
+// AEDT (UTC+11 in January)
+const birthdayDate = new Date('2026-01-26T15:00:00+11:00');
+
+function updateCountdown() {
+  const now = new Date();
+  const diff = birthdayDate - now;
+
+  if (diff < 0) {
+    countdownEl.innerHTML = "🎉 The party has started! 🎉";
+    return;
   }
-  setInterval(updateCountdown,1000);
-  updateCountdown();
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  countdownEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+}
+
+// Update every second
+setInterval(updateCountdown, 1000);
+updateCountdown();
 
   // ===== RSVP Form =====
   const form = document.getElementById('rsvpForm');
@@ -495,10 +627,6 @@ header p {
       });
       showToast(`🎉 Thank you, ${name}!`);
       form.reset();
-
-      // LEGO sound
-      const audio = new Audio('https://www.soundjay.com/button/sounds/button-16.mp3');
-      audio.play();
 
       // Animated send brick
       createSendBrick();
