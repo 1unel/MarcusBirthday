@@ -13,7 +13,6 @@
     font-display: swap;
   }
 
-  /* ===== Body & Background ===== */
   body {
     margin: 0;
     font-family: 'Rolade', sans-serif;
@@ -33,7 +32,6 @@
     z-index:0;
   }
 
-  /* ===== Header ===== */
   header {
     text-align: center;
     padding: 50px 20px 30px 20px;
@@ -43,57 +41,35 @@
     z-index:1;
   }
 
-  /* Marcus LEGO Name */
-  #lego-name img {
+  #lego-name img, #lego-turns img, #lego-age img {
     max-width: 90%;
     height: auto;
     display: block;
     margin: 0 auto 15px;
-    width: 300px;
-    max-width: 90vw;
     filter: drop-shadow(3px 3px 5px #d6001c);
     transition: transform 0.3s;
   }
+  #lego-name img { width: 300px; }
+  #lego-turns img { width: 200px; }
+  #lego-age img { width: 150px; }
 
-  #lego-turns img {
-    max-width: 90%;
-    height: auto;
-    display: block;
-    margin: 0 auto 15px;
-    width: 200px;
-    max-width: 90vw;
-    filter: drop-shadow(3px 3px 5px #d6001c);
-    transition: transform 0.3s;
-  }
-
-  #lego-name img:hover {
+  #lego-name img:hover, #lego-turns img:hover, #lego-age img:hover {
     transform: scale(1.05);
   }
 
-  header p {
-    font-size: 1.2em;
-    margin: 5px 0;
-  }
+  header p { font-size: 1.2em; margin: 5px 0; }
+  #countdown { font-size: 1.5em; margin-top: 15px; color: #1a1a1a; font-weight: bold; }
 
-  #countdown {
-    font-size: 1.5em;
-    margin-top: 15px;
-    color: #1a1a1a;
-    font-weight: bold;
-  }
-
-  /* ===== Event Info ===== */
   .event-info {
     text-align: center;
     font-size: 1.2em;
     margin: 30px 20px;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgba(255,255,255,0.85);
     padding: 20px;
     border-radius: 15px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.2); 
   }
 
-  /* ===== Carousel ===== */
   .carousel {
     display: flex;
     overflow-x: auto;
@@ -114,11 +90,8 @@
     scroll-snap-align: center;
   }
 
-  .carousel img:hover {
-    transform: scale(1.08) rotate(5deg);
-  }
+  .carousel img:hover { transform: scale(1.08) rotate(5deg); }
 
-  /* ===== RSVP Form ===== */
   .rsvp {
     text-align: center;
     margin: 50px 20px;
@@ -127,7 +100,7 @@
     border-radius: 15px;
     box-shadow: 0 5px 10px rgba(0,0,0,0.2);
     position: relative;
-    z-index: 10; /* ensure clickable above bricks */
+    z-index: 10;
   }
 
   .rsvp input, .rsvp textarea {
@@ -151,11 +124,8 @@
     transition: background 0.3s;
   }
 
-  .rsvp button:hover {
-    background: #ff4757;
-  }
+  .rsvp button:hover { background: #ff4757; }
 
-  /* ===== Footer ===== */
   footer {
     text-align: center;
     padding: 20px;
@@ -167,16 +137,14 @@
     z-index:1;
   }
 
-  /* ===== Floating LEGO bricks ===== */
   .floating-brick {
     position: absolute;
-    pointer-events: none; /* clicks pass through */
+    pointer-events: none;
     z-index: 1;
     transform: rotate(0deg);
     transition: transform 0.1s;
   }
 
-  /* ===== Toast Notification ===== */
   .toast {
     position: fixed;
     bottom: 30px;
@@ -192,23 +160,9 @@
     transition: opacity 0.5s;
   }
 
-  .toast.show {
-    opacity: 1;
-  }
+  .toast.show { opacity: 1; }
 
-  /* ===== Responsive ===== */
-  @media(max-width: 600px) {
-    #lego-name img { width: 200px; }
-    .carousel img { width: 180px; height: 180px; }
-    .rsvp input, .rsvp textarea { width: 90%; }
-  }
-
-  /* ===== LIVE WISH WALL ===== */
-  #wishWall {
-    margin-top: 25px;
-    text-align: left;
-  }
-
+  #wishWall { margin-top: 25px; text-align: left; }
   .wish {
     background: white;
     border-left: 8px solid #1e90ff;
@@ -217,35 +171,27 @@
     margin-bottom: 10px;
     animation: fadeIn 0.4s ease;
   }
-
-  .wish strong {
-    color: #d6001c;
-  }
-
+  .wish strong { color: #d6001c; }
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
+  @media(max-width: 600px) {
+    #lego-name img { width: 200px; }
+    .carousel img { width: 180px; height: 180px; }
+    .rsvp input, .rsvp textarea { width: 90%; }
+  }
 </style>
 </head>
 <body>
 
-<!-- Background Music -->
 <audio id="bg-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop autoplay></audio>
 
 <header>
-  <div id="lego-name">
-    <img src="images/marcusname.png" alt="Marcus LEGO Name">
-  </div>
-
-  <div id="lego-turns">
-    <img src="images/turns.png" alt="Turns LEGO Name">
-  </div>
-
-  <div id="lego-name">
-    <img src="images/6.png" alt="6 LEGO Name">
-  </div>
+  <div id="lego-name"><img src="images/marcusname.png" alt="Marcus LEGO Name"></div>
+  <div id="lego-turns"><img src="images/turns.png" alt="Turns LEGO Name"></div>
+  <div id="lego-age"><img src="images/6.png" alt="6 LEGO Name"></div>
   
   <p>🎉 Marcus’ LEGO Birthday Bash 🎂</p>
   <p>Countdown to the Party:</p>
@@ -260,142 +206,171 @@
 </section>
 
 <section class="carousel">
-  <img src="https://wallpapercave.com/wp/wp8798492.jpg" alt="LEGO Image 1" loading="lazy">
-  <img src="https://wallpapers-clan.com/wp-content/uploads/2025/01/lego-marvel-wolverine-deadpool-desktop-wallpaper-preview.jpg" alt="LEGO Image 2" loading="lazy">
-  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjgd0KFuW6bGG2BjUT8DnCk5zSf8lXA01QiQ&s" alt="LEGO Image 3" loading="lazy">
-  <img src="https://www.hdwallpapers.in/download/the_lego_batman_movie_2017-wide.jpg" alt="LEGO Image 4" loading="lazy">
+  <img src="https://wallpapercave.com/wp/wp8798492.jpg" alt="LEGO Image 1">
+  <img src="https://wallpapers-clan.com/wp-content/uploads/2025/01/lego-marvel-wolverine-deadpool-desktop-wallpaper-preview.jpg" alt="LEGO Image 2">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjgd0KFuW6bGG2BjUT8DnCk5zSf8lXA01QiQ&s" alt="LEGO Image 3">
+  <img src="https://www.hdwallpapers.in/download/the_lego_batman_movie_2017-wide.jpg" alt="LEGO Image 4">
 </section>
 
 <section class="rsvp">
   <h2>Leave a Birthday Wish for Marcus!</h2>
 
-  <!-- RSVP FORM -->
   <form id="rsvpForm">
     <input type="text" placeholder="Your Name (optional)" id="name"><br>
     <textarea placeholder="Your Message" id="message" required></textarea><br>
     <button type="submit">Send Wish 🎈</button>
   </form>
 
-  <!-- LIVE WISH WALL -->
   <div id="wishWall"></div>
 </section>
 
-<footer>
-  Thank you for celebrating with Marcus! 💛
-</footer>
-
-<!-- Toast -->
+<footer>Thank you for celebrating with Marcus! 💛</footer>
 <div id="toast" class="toast">Wish sent!</div>
 
+<!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 <script>
-  // ===== Countdown Timer =====
+  // ===== Firebase Config =====
+  const firebaseConfig = {
+    apiKey: "AIzaSyCE7VmZFzmwUVbsHl1KDj-N_4QR6KH0_xo",
+    authDomain: "marcusbirthday-86ac8.firebaseapp.com",
+    projectId: "marcusbirthday-86ac8",
+    storageBucket: "marcusbirthday-86ac8.appspot.com",
+    messagingSenderId: "185345839488",
+    appId: "1:185345839488:web:ea610f80abbb0d4fd2b165"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // ===== Countdown =====
   const countdownEl = document.getElementById('countdown');
   const birthdayDate = new Date('2026-01-26T15:00:00');
-
-  function updateCountdown() {
+  function updateCountdown(){
     const now = new Date();
     const diff = birthdayDate - now;
-    if(diff < 0){
-      countdownEl.innerHTML = "🎉 The party has started! 🎉";
-      return;
-    }
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff/(1000*60*60)) % 24);
-    const minutes = Math.floor((diff/(1000*60)) % 60);
-    const seconds = Math.floor((diff/1000) % 60);
-    countdownEl.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    if(diff<0){ countdownEl.innerHTML="🎉 The party has started! 🎉"; return; }
+    const days = Math.floor(diff/(1000*60*60*24));
+    const hours = Math.floor((diff/(1000*60*60))%24);
+    const minutes = Math.floor((diff/(1000*60))%60);
+    const seconds = Math.floor((diff/1000)%60);
+    countdownEl.innerHTML=`${days}d ${hours}h ${minutes}m ${seconds}s`;
   }
-  setInterval(updateCountdown, 1000);
+  setInterval(updateCountdown,1000);
   updateCountdown();
 
-  /* ===== RSVP WISH SYSTEM ===== */
+  // ===== RSVP Form =====
   const form = document.getElementById('rsvpForm');
   const wishWall = document.getElementById('wishWall');
 
-  // Load wishes from LocalStorage
-  loadWishes();
+  // Live wishes
+  db.collection("wishes").orderBy("timestamp","desc")
+    .onSnapshot(snapshot=>{
+      wishWall.innerHTML="";
+      snapshot.forEach(doc=>{
+        const data=doc.data();
+        renderWish(data.name,data.message);
+      });
+    });
 
-  form.addEventListener('submit', function(e){
-    e.preventDefault(); // prevent page refresh
+  form.addEventListener('submit', async e=>{
+    e.preventDefault();
+    const name=document.getElementById('name').value.trim()||'Anonymous';
+    const message=document.getElementById('message').value.trim();
+    if(!message){ showToast('Please write a birthday message 🎂'); return; }
 
-    const name = document.getElementById('name').value.trim() || 'Anonymous';
-    const message = document.getElementById('message').value.trim();
+    try{
+      await db.collection("wishes").add({
+        name,
+        message,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      showToast(`🎉 Thank you, ${name}!`);
+      form.reset();
 
-    if(!message){
-      showToast('Please write a birthday message 🎂');
-      return;
+      // LEGO sound
+      const audio = new Audio('https://www.soundjay.com/button/sounds/button-16.mp3');
+      audio.play();
+
+      // Animated send brick
+      createSendBrick();
+    }catch(err){
+      console.error(err);
+      showToast('❌ Could not send wish. Try again!');
     }
-
-    const wish = { name, message };
-    saveWish(wish);
-    renderWish(wish);
-    showToast(`🎉 Thank you, ${name}!`);
-    form.reset();
   });
 
-  function saveWish(wish){
-    const wishes = JSON.parse(localStorage.getItem('wishes')) || [];
-    wishes.unshift(wish);
-    localStorage.setItem('wishes', JSON.stringify(wishes));
-  }
-
-  function loadWishes(){
-    const wishes = JSON.parse(localStorage.getItem('wishes')) || [];
-    wishes.forEach(renderWish);
-  }
-
-  function renderWish(wish){
-    const div = document.createElement('div');
-    div.className = 'wish';
-    div.innerHTML = `<strong>${wish.name}</strong><br>${wish.message}`;
+  function renderWish(name,message){
+    const div=document.createElement('div');
+    div.className='wish';
+    div.innerHTML=`<strong>${name}</strong><br>${message}`;
     wishWall.prepend(div);
   }
 
   function showToast(text){
-    const toast = document.getElementById('toast');
-    toast.innerText = text;
+    const toast=document.getElementById('toast');
+    toast.innerText=text;
     toast.classList.add('show');
-    setTimeout(()=> toast.classList.remove('show'), 3000);
+    setTimeout(()=>toast.classList.remove('show'),3000);
   }
 
   // ===== Floating LEGO bricks =====
-  const legoImages = [
-    'images/green brick.png', 'images/blue brick.png', 'images/yellow brick.png'
-  ];
-
-  const floatingCount = 12;
+  const legoImages=['images/green brick.png','images/blue brick.png','images/yellow brick.png'];
+  const floatingCount=12;
   for(let i=0;i<floatingCount;i++){
-    const brick = document.createElement('img');
-    brick.src = legoImages[Math.floor(Math.random()*legoImages.length)];
-    brick.className = 'floating-brick';
-    brick.style.width = 40 + Math.random()*30 + 'px';
-    brick.style.left = Math.random()*100 + 'vw';
-    brick.style.top = window.innerHeight + Math.random()*500 + 'px';
-    brick.style.transform = `rotate(${Math.random()*360}deg)`;
+    const brick=document.createElement('img');
+    brick.src=legoImages[Math.floor(Math.random()*legoImages.length)];
+    brick.className='floating-brick';
+    brick.style.width=40+Math.random()*30+'px';
+    brick.style.left=Math.random()*100+'vw';
+    brick.style.top=window.innerHeight+Math.random()*500+'px';
+    brick.style.transform=`rotate(${Math.random()*360}deg)`;
     document.body.appendChild(brick);
-    animateFloatingBrick(brick, Math.random()*1.5 + 0.5);
+    animateFloatingBrick(brick,Math.random()*1.5+0.5);
   }
 
-  function animateFloatingBrick(el, speed){
-    let x = parseFloat(el.style.left);
-    let y = parseFloat(el.style.top);
-    let rot = Math.random()*360;
-
+  function animateFloatingBrick(el,speed){
+    let x=parseFloat(el.style.left);
+    let y=parseFloat(el.style.top);
+    let rot=Math.random()*360;
     function floatStep(){
-      y -= speed;
-      rot += 1;
-      if(y < -60){
-        y = window.innerHeight + Math.random()*200;
-        x = Math.random()*100;
-        el.style.width = 40 + Math.random()*30 + 'px';
+      y-=speed;
+      rot+=1;
+      if(y<-60){
+        y=window.innerHeight+Math.random()*200;
+        x=Math.random()*100;
+        el.style.width=40+Math.random()*30+'px';
       }
-      el.style.top = y + 'px';
-      el.style.left = x + 'vw';
-      el.style.transform = `rotate(${rot}deg)`;
+      el.style.top=y+'px';
+      el.style.left=x+'vw';
+      el.style.transform=`rotate(${rot}deg)`;
       requestAnimationFrame(floatStep);
     }
     requestAnimationFrame(floatStep);
   }
+
+  function createSendBrick(){
+    const brick=document.createElement('img');
+    brick.src=legoImages[Math.floor(Math.random()*legoImages.length)];
+    brick.className='floating-brick';
+    brick.style.width='50px';
+    brick.style.left='50%';
+    brick.style.top='60%';
+    document.body.appendChild(brick);
+    let top=brick.offsetTop;
+    let opacity=1;
+    function animate(){
+      top-=3;
+      opacity-=0.02;
+      brick.style.top=top+'px';
+      brick.style.opacity=opacity;
+      if(opacity>0) requestAnimationFrame(animate);
+      else brick.remove();
+    }
+    animate();
+  }
+
 </script>
 </body>
 </html>
