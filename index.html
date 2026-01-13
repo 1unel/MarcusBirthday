@@ -52,6 +52,8 @@ header {
   margin: 0 auto 15px;
   filter: drop-shadow(3px 3px 5px #d6001c);
   transition: transform 0.3s;
+  position: relative;
+  z-index: 2;
 }
 
 #lego-name img { width: 300px; }
@@ -65,13 +67,15 @@ header {
 }
 
 /* ===== Dragon ===== */
+
+
 #dragon {
   position: absolute; /* relative to header */
   top: 20px;          /* adjust vertical position */
   right: -300px;      /* start further off-screen */
   width: 800px;       /* BIGGER size */
   height: auto;
-  z-index: 10;        /* above LEGO images */
+  z-index: 1;        /* above LEGO images */
   animation: slideIn 2s forwards ease-out;
 }
 
@@ -95,7 +99,7 @@ header {
   left: -300px;        /* start off-screen to the left */
   width: 800px;        /* same big size as right dragon */
   height: auto;
-  z-index: 10;
+  z-index: 1;
   animation: slideInLeft 2s forwards ease-out;
 }
 
@@ -109,6 +113,40 @@ header {
     left: 20px;        /* final position next to LEGO images on left */
     opacity: 1;
     transform: scale(1) rotate(0deg);
+  }
+}
+
+/* ===== Responsive Dragons ===== */
+@media (max-width: 1024px) {
+  /* Tablets: scale down size */
+  #dragon, #dragon-left {
+    width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Phones: smaller size, closer to top */
+  #dragon, #dragon-left {
+    width: 250px;
+    top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Very small phones: stack dragons and disable slide animation */
+  #dragon-container, #dragon-left-container {
+    position: relative;
+    left: auto;
+    right: auto;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  #dragon, #dragon-left {
+    width: 150px;     /* small size */
+    animation: none;  /* remove slide animation */
   }
 }
 
@@ -289,6 +327,7 @@ header p {
 <audio id="bg-music" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop autoplay></audio>
 
 <header>
+
   <div id="lego-name">
     <img src="images/marcusname.png" alt="Marcus LEGO Name">
   </div>
@@ -301,7 +340,7 @@ header p {
     <img src="images/6.png" alt="6 LEGO Name">
   </div>
 
-  <!-- Right dragon -->
+     <!-- Right dragon -->
   <div id="dragon-container">
     <img src="images/lego dragons.jpg" id="dragon" alt="Dragon Right">
   </div>
@@ -310,6 +349,7 @@ header p {
   <div id="dragon-left-container">
     <img src="images/lego dragons 2.jpg" id="dragon-left" alt="Dragon Left">
   </div>
+
 
   <p>🎉 Marcus’ LEGO Birthday Bash 🎂</p>
   <p>Countdown to the Party:</p>
