@@ -444,6 +444,128 @@ header p {
     .carousel-track img { width: 200px; height: 200px; }
     .rsvp input, .rsvp textarea { width: 90%; }
   }
+
+  /* Buttons styling */
+  .rsvp-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .rsvp-btn {
+    padding: 14px 20px;
+    font-size: 1em;
+    font-weight: bold;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 14px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    min-width: 140px;
+    text-align: center;
+  }
+
+  .rsvp-btn.call { background: #d6001c; }
+  .rsvp-btn.sms { background: #ff9800; }
+  .rsvp-btn.whatsapp { background: #25d366; }
+  .rsvp-btn.maps { background: #4285f4; }
+
+  .rsvp-btn:hover { transform: scale(1.05); opacity: 0.95; }
+
+  /* Responsive stacking */
+  @media (max-width: 480px) {
+    .rsvp-btn { width: 100%; }
+  }
+
+  #googleRsvpForm {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 25px 30px;
+  border-radius: 20px;
+  max-width: 450px;
+  margin: 30px auto;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  font-family: 'Rolade', sans-serif;
+}
+
+#googleRsvpForm h2 {
+  margin-bottom: 20px;
+  font-size: 1.8em;
+  color: #d6001c;
+}
+
+#googleRsvpForm input,
+#googleRsvpForm select {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 10px 0;
+  border-radius: 12px;
+  border: 2px solid #d6001c;
+  font-size: 1em;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+#googleRsvpForm input:focus,
+#googleRsvpForm select:focus {
+  border-color: #ff9800;
+  box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+}
+
+#googleRsvpForm button {
+  padding: 14px 25px;
+  margin-top: 15px;
+  font-size: 1em;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #d6001c, #ff4757);
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#googleRsvpForm button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(214, 0, 28, 0.5);
+}
+
+/* RSVP Message */
+#gsrsvpMsg {
+  margin-top: 15px;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+/* Mobile responsiveness */
+@media(max-width: 480px) {
+  #googleRsvpForm {
+    padding: 20px 15px;
+    margin: 20px;
+  }
+
+  #googleRsvpForm h2 {
+    font-size: 1.5em;
+  }
+
+  #googleRsvpForm input,
+  #googleRsvpForm select,
+  #googleRsvpForm button {
+    font-size: 0.95em;
+  }
+}
+
+#googleRsvpForm input,
+#googleRsvpForm select,
+#googleRsvpForm textarea {
+  width: 95%; /* prevents overflow */
+  box-sizing: border-box;
+}
+
 </style>
 
 </head>
@@ -482,6 +604,8 @@ header p {
 </header>
 
 <section class="event-info">
+
+  <div>
   <p>📅 Monday, January 26</p>
   <p>🕒 3:00 PM</p>
   <p>📍 Ardeer Community Park Playground (140 Forrest St)</p>
@@ -489,23 +613,86 @@ header p {
     <a href="https://www.google.com/maps/search/?api=1&query=Ardeer+Community+Park+Playground+140+Forrest+St" target="_blank" class="rsvp-btn maps">
       📍 Open in Google Maps
       </a>
-
-      <p>RSVP</p>
-  <div class="rsvp-buttons">
-
-    <!-- SMS -->
-    <a href="sms:+61450059438" class="rsvp-btn sms">TEXT</a>
-
-    <!-- WhatsApp -->
-    <a href="https://wa.me/61450059438" target="_blank" class="rsvp-btn whatsapp">
-      WHATSAPP
-    </a>
-
-    
-    
   </div>
+
 </section>
 
+<section>
+  <form id="googleRsvpForm">
+    <h3>RSVP to Marcus’ LEGO Birthday 🎉</h3>
+
+  <input type="text" name="name" placeholder="Your Name">
+  <input type="tel" name="phone" placeholder="Phone Number">
+  <select name="rsvp" required>
+    <option value="">Will you attend?</option>
+    <option value="Yes">Yes 🎉</option>
+    <option value="No">No 😢</option>
+  </select>
+  <button type="submit">Submit RSVP</button>
+
+  <div id="gsrsvpMsg" style="margin-top:10px;"></div>
+
+  <div class="rsvp-quick-options">
+    <p>CONTACT: 0450059438 </p>
+    <div class="rsvp-buttons">
+      <!-- SMS -->
+      <a href="sms:+61450059438" class="rsvp-btn sms">TEXT</a>
+
+      <!-- WhatsApp -->
+      <a href="https://wa.me/61450059438" target="_blank" class="rsvp-btn whatsapp">
+      WHATSAPP
+      </a>
+    </div>
+  </div>
+
+</form>
+
+
+
+
+<script>
+const gsrsvpForm = document.getElementById('googleRsvpForm');
+const gsrsvpMsg = document.getElementById('gsrsvpMsg');
+
+// Replace with your deployed Google Apps Script Web App URL
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx51FtppWVe1JoB202SJsh-olcRNS47urMjopOyL1Op7M7iXBdy-cV4urHbH2OMJoxZVQ/exec';
+
+gsrsvpForm.addEventListener('submit', e => {
+  e.preventDefault();
+
+  const data = {
+    name: gsrsvpForm.name.value || 'Anonymous',
+    phone: gsrsvpForm.phone.value || '',
+    rsvp: gsrsvpForm.rsvp.value || ''
+  };
+
+  fetch(WEB_APP_URL, {
+    method: 'POST',
+    body: JSON.stringify(data)
+  })
+  .then(res => res.text()) // parse as text first
+  .then(text => {
+    let res;
+    try { res = JSON.parse(text); } // then safely parse JSON
+    catch(err) { throw new Error(text); }
+
+    if(res.status === "success"){
+      gsrsvpMsg.textContent = "✅ RSVP Submitted! Thank you!";
+      gsrsvpMsg.style.color = "green";
+      gsrsvpForm.reset();
+    } else {
+      gsrsvpMsg.textContent = "❌ Error: " + res.message;
+      gsrsvpMsg.style.color = "red";
+    }
+  })
+  .catch(err => {
+    gsrsvpMsg.textContent = "❌ Error submitting RSVP";
+    gsrsvpMsg.style.color = "red";
+    console.error(err);
+  });
+});
+</script>
+</section>
 
 <section class="carousel-container">
   <div class="carousel-track">
