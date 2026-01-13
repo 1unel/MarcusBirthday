@@ -307,6 +307,8 @@ header p {
 .rsvp-btn.whatsapp { background: #25d366; }
 .rsvp-btn.maps { background: #4285f4; }
 
+
+
 /* Hover */
 .rsvp-btn:hover {
   transform: scale(1.05);
@@ -401,7 +403,7 @@ header p {
   .floating-brick {
     position: absolute;
     pointer-events: none;
-    z-index: 1;
+    z-index: 11;
     transform: rotate(0deg);
     transition: transform 0.1s;
   }
@@ -450,6 +452,34 @@ header p {
     to { opacity: 1; transform: translateY(0); }
   }
 
+  .wish-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.wish-pagination button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #1e90ff;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.wish-pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+#wishPageInfo {
+  font-weight: bold;
+  color: #333;
+}
+
   /* ===== Footer ===== */
   footer {
     text-align: center;
@@ -493,12 +523,14 @@ header p {
     text-align: center;
   }
 
-  .rsvp-btn.call { background: #d6001c; }
   .rsvp-btn.sms { background: #ff9800; }
   .rsvp-btn.whatsapp { background: #25d366; }
   .rsvp-btn.maps { background: #4285f4; }
 
-  .rsvp-btn:hover { transform: scale(1.05); opacity: 0.95; }
+  .rsvp-btn.maps:hover {
+  transform: scale(2.05);
+  box-shadow: 0 6px 20px rgb(3, 8, 87);
+}
 
   /* Responsive stacking */
   @media (max-width: 480px) {
@@ -651,7 +683,7 @@ header p {
   </div>
 
   <a href="https://www.google.com/maps/search/?api=1&query=Ardeer+Community+Park+Playground+140+Forrest+St" target="_blank" class="rsvp-btn maps">
-        📍 Open in Google Maps
+        OPEN GOOGLE MAP
       </a>
 
 </section>
@@ -774,6 +806,13 @@ gsrsvpForm.addEventListener('submit', e => {
   </form>
 
   <div id="wishWall"></div>
+
+<div class="wish-pagination">
+  <button id="prevWish" disabled>⬅ Previous</button>
+  <span id="wishPageInfo"></span>
+  <button id="nextWish">Next ➡</button>
+</div>
+
 </section>
 
 <footer>Thank you for celebrating with Marcus! 💛</footer>
@@ -830,51 +869,97 @@ updateCountdown();
   const wishWall = document.getElementById('wishWall');
 
   // Live wishes
-  db.collection("wishes").orderBy("timestamp","desc")
-    .onSnapshot(snapshot=>{
-      wishWall.innerHTML="";
-      snapshot.forEach(doc=>{
-        const data=doc.data();
-        renderWish(data.name,data.message);
-      });
-    });
+const prevBtn = document.getElementById('prevWish');
+const nextBtn = document.getElementById('nextWish');
+const pageInfo = document.getElementById('wishPageInfo');
 
-  form.addEventListener('submit', async e=>{
-    e.preventDefault();
-    const name=document.getElementById('name').value.trim()||'Anonymous';
-    const message=document.getElementById('message').value.trim();
-    if(!message){ showToast('Please write a birthday message 🎂'); return; }
+const WISHES_PER_PAGE = 5;
+let wishes = [];
+let currentPage = 1;
 
-    try{
-      await db.collection("wishes").add({
-        name,
-        message,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      });
-      showToast(`🎉 Thank you, ${name}!`);
-      form.reset();
-
-      // Animated send brick
-      createSendBrick();
-    }catch(err){
-      console.error(err);
-      showToast('❌ Could not send wish. Try again!');
-    }
+// 🔥 SINGLE source of truth
+db.collection("wishes")
+  .orderBy("timestamp", "desc")
+  .onSnapshot(snapshot => {
+    wishes = snapshot.docs.map(doc => doc.data());
+    currentPage = 1;
+    renderWishPage();
   });
 
-  function renderWish(name,message){
-    const div=document.createElement('div');
-    div.className='wish';
-    div.innerHTML=`<strong>${name}</strong><br>${message}`;
-    wishWall.prepend(div);
+function renderWishPage() {
+  wishWall.innerHTML = "";
+
+  const start = (currentPage - 1) * WISHES_PER_PAGE;
+  const end = start + WISHES_PER_PAGE;
+
+  wishes.slice(start, end).forEach(wish => {
+    renderWish(wish.name, wish.message);
+  });
+
+  const totalPages = Math.max(1, Math.ceil(wishes.length / WISHES_PER_PAGE));
+  pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+
+  prevBtn.disabled = currentPage === 1;
+  nextBtn.disabled = currentPage === totalPages;
+}
+
+prevBtn.onclick = () => {
+  if (currentPage > 1) {
+    currentPage--;
+    renderWishPage();
+  }
+};
+
+nextBtn.onclick = () => {
+  const totalPages = Math.ceil(wishes.length / WISHES_PER_PAGE);
+  if (currentPage < totalPages) {
+    currentPage++;
+    renderWishPage();
+  }
+};
+
+// ===== Submit wish (UNCHANGED except removed prepend)
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+
+  const name = document.getElementById('name').value.trim() || 'Anonymous';
+  const message = document.getElementById('message').value.trim();
+
+  if (!message) {
+    showToast('Please write a birthday message 🎂');
+    return;
   }
 
-  function showToast(text){
-    const toast=document.getElementById('toast');
-    toast.innerText=text;
-    toast.classList.add('show');
-    setTimeout(()=>toast.classList.remove('show'),3000);
+  try {
+    await db.collection("wishes").add({
+      name,
+      message,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    showToast(`🎉 Thank you, ${name}!`);
+    form.reset();
+    createSendBrick();
+
+  } catch (err) {
+    console.error(err);
+    showToast('❌ Could not send wish. Try again!');
   }
+});
+
+function renderWish(name, message) {
+  const div = document.createElement('div');
+  div.className = 'wish';
+  div.innerHTML = `<strong>${name}</strong><br>${message}`;
+  wishWall.appendChild(div);
+}
+
+function showToast(text) {
+  const toast = document.getElementById('toast');
+  toast.innerText = text;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
 
   // ===== Floating LEGO bricks =====
   const legoImages=['images/green brick.png','images/blue brick.png','images/yellow brick.png'];
