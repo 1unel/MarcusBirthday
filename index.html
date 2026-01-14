@@ -692,8 +692,8 @@ header p {
   <form id="googleRsvpForm">
     <h3>RSVP to Marcus’ LEGO Birthday 🎉</h3>
 
-  <input type="text" name="name" placeholder="Your Name">
-  <input type="tel" name="phone" placeholder="Phone Number">
+  <input type="text" name="name" placeholder="Your Name" required>
+  <input type="tel" name="phone" placeholder="Mobile Number" required>
   <select name="rsvp" required>
     <option value="">Will you attend?</option>
     <option value="Yes">Yes 🎉</option>
@@ -731,11 +731,21 @@ const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx51FtppWVe1JoB202S
 gsrsvpForm.addEventListener('submit', e => {
   e.preventDefault();
 
-  const data = {
-    name: gsrsvpForm.name.value || 'Anonymous',
-    phone: gsrsvpForm.phone.value || '',
-    rsvp: gsrsvpForm.rsvp.value || ''
-  };
+const name = gsrsvpForm.name.value.trim();
+const phone = gsrsvpForm.phone.value.trim();
+
+// ❌ Stop if fields are empty
+if (!name || !phone) {
+  gsrsvpMsg.textContent = "❌ Please enter your name and mobile number.";
+  gsrsvpMsg.style.color = "red";
+  return;
+}
+
+const data = {
+  name,
+  phone,
+  rsvp: gsrsvpForm.rsvp.value || ''
+};
 
   fetch(WEB_APP_URL, {
     method: 'POST',
@@ -1017,6 +1027,112 @@ function showToast(text) {
     animate();
   }
 
+  // ===== 6-Minute Cooldown (RSVP + Wish) =====
+const COOLDOWN_SECONDS = 360; // 6 minutes
+
+function applyCooldown(formId, buttonSelector, storageKey) {
+  const form = document.getElementById(formId);
+  if (!form) return;
+
+  const button = form.querySelector(buttonSelector);
+  if (!button) return;
+
+  const savedTime = localStorage.getItem(storageKey);
+
+  function startCooldown() {
+    const endTime = Date.now() + COOLDOWN_SECONDS * 1000;
+    localStorage.setItem(storageKey, endTime);
+    hideButton();
+    runTimer(endTime);
+  }
+
+  function hideButton() {
+    button.style.display = 'none';
+  }
+
+  function showButton() {
+    button.style.display = 'inline-block';
+  }
+
+  function runTimer(endTime) {
+    const interval = setInterval(() => {
+      if (Date.now() >= endTime) {
+        clearInterval(interval);
+        localStorage.removeItem(storageKey);
+        showButton();
+      }
+    }, 1000);
+  }
+
+  // Restore cooldown on reload
+  if (savedTime && Date.now() < savedTime) {
+    hideButton();
+    runTimer(savedTime);
+  }
+
+  // Hook submit
+  form.addEventListener('submit', () => {
+    startCooldown();
+  });
+}
+
+// Apply cooldowns
+applyCooldown('googleRsvpForm', 'button[type="submit"]', 'cooldown_rsvp');
+applyCooldown('rsvpForm', 'button[type="submit"]', 'cooldown_wish');
+
+  // ===== Replace Submit Button With Confirmation Message =====
+function replaceButtonWithMessage({
+  formId,
+  buttonSelector,
+  storageKey,
+  messageText
+}) {
+  const form = document.getElementById(formId);
+  if (!form) return;
+
+  const button = form.querySelector(buttonSelector);
+  if (!button) return;
+
+  const messageEl = document.createElement('div');
+  messageEl.className = 'submit-confirmation';
+  messageEl.textContent = messageText;
+  messageEl.style.display = 'none';
+
+  button.parentNode.insertBefore(messageEl, button.nextSibling);
+
+  function showMessage() {
+    button.style.display = 'none';
+    messageEl.style.display = 'block';
+  }
+
+  // Persist after reload (cooldown-based)
+  const cooldownUntil = localStorage.getItem(storageKey);
+  if (cooldownUntil && Date.now() < cooldownUntil) {
+    showMessage();
+  }
+
+  form.addEventListener('submit', () => {
+    showMessage();
+  });
+}
+
+// ✅ RSVP FORM
+replaceButtonWithMessage({
+  formId: 'googleRsvpForm',
+  buttonSelector: 'button[type="submit"]',
+  storageKey: 'cooldown_rsvp',
+  messageText: 'Your RSVP has been successfully recorded. Thank you!'
+});
+
+// ✅ WISH FORM
+replaceButtonWithMessage({
+  formId: 'rsvpForm',
+  buttonSelector: 'button[type="submit"]',
+  storageKey: 'cooldown_wish',
+  messageText: 'Your birthday message has been added. Thank you for sharing!'
+});
+  
 </script>
 </body>
 </html>
+
